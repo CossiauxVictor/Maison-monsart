@@ -25,6 +25,7 @@ function useFadeIn(threshold = 0.1) {
 export default function App() {
   const hero = useFadeIn(0.2)
   const constat = useFadeIn(0.15)
+  const newsletter = useFadeIn(0.15)
   const positionnement = useFadeIn(0.1)
   const role = useFadeIn(0.1)
   const engagements = useFadeIn(0.1)
@@ -32,7 +33,9 @@ export default function App() {
 
   const [heroVisible, setHeroVisible] = useState(false)
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' })
+  const [newsletterEmail, setNewsletterEmail] = useState('')
   const [formSent, setFormSent] = useState(false)
+  const [newsletterSent, setNewsletterSent] = useState(false)
 
   useEffect(() => {
     const t = setTimeout(() => setHeroVisible(true), 50)
@@ -53,6 +56,15 @@ export default function App() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
+  function handleNewsletterSubmit(e) {
+    e.preventDefault()
+    if (newsletterEmail.trim()) {
+      const body = `Inscription newsletter : ${newsletterEmail.trim()}`
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Inscription newsletter')}&body=${encodeURIComponent(body)}`
+      setNewsletterSent(true)
+    }
+  }
+
   return (
     <div className="min-h-screen">
       {/* Nav minimal */}
@@ -63,6 +75,7 @@ export default function App() {
           </a>
           <div className="flex items-center gap-6 text-sm font-light text-white/90">
             <a href="#approche" className="hover:text-white transition-colors">Notre approche</a>
+            <a href="#newsletter" className="hover:text-white transition-colors">Newsletter</a>
             <a href="#contact" className="hover:text-white transition-colors">Contact</a>
           </div>
         </div>
@@ -99,10 +112,10 @@ export default function App() {
             Nous sélectionnons mieux.
           </p>
           <a
-            href="#approche"
+            href="#newsletter"
             className="inline-block border border-white/70 px-6 py-3 text-sm font-medium tracking-wide text-white hover:bg-white/15 transition-colors duration-300"
           >
-            Découvrir notre approche
+            Rester informé
           </a>
         </div>
       </header>
@@ -131,6 +144,45 @@ export default function App() {
               Aucun acteur ne combine aujourd’hui pleinement marketplace, premium, Made in France et éditorialisation forte. Cette absence crée une opportunité claire.
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section
+        id="newsletter"
+        ref={newsletter.ref}
+        className={`py-24 sm:py-32 px-6 sm:px-8 md:px-12 bg-[#f8f8f8] transition-all duration-700 ${newsletter.visible ? 'opacity-100' : 'opacity-0'}`}
+      >
+        <div className="max-w-2xl mx-auto">
+          <h2 className="font-display text-2xl sm:text-3xl text-monsart-night mb-4 font-medium tracking-tight border-b border-monsart-night/20 pb-4 inline-block">
+            Newsletter
+          </h2>
+          <p className="text-[#555] font-light leading-relaxed mb-8">
+            Restez informé de notre actualité, de nos sélections et de l’évolution de Maison Monsart.
+          </p>
+          {newsletterSent ? (
+            <div className="p-6 border border-monsart-night/20 bg-white text-monsart-night text-center">
+              <p className="font-medium mb-1">Demande envoyée</p>
+              <p className="text-sm font-light text-[#555]">Votre client de messagerie va s’ouvrir pour confirmer votre inscription.</p>
+            </div>
+          ) : (
+            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3">
+              <input
+                type="email"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                required
+                placeholder="votre@email.fr"
+                className="flex-1 px-4 py-3 border border-[#e0e0e0] bg-white text-[#333] font-light focus:outline-none focus:border-monsart-night/50 transition-colors"
+              />
+              <button
+                type="submit"
+                className="px-6 py-3 bg-monsart-night text-white text-sm font-medium tracking-wide hover:bg-monsart-night/90 transition-colors duration-300 border border-monsart-night"
+              >
+                S’inscrire
+              </button>
+            </form>
+          )}
         </div>
       </section>
 
