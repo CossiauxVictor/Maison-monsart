@@ -76,6 +76,7 @@ export default function App() {
           <div className="flex items-center gap-6 text-sm font-light text-white/90">
             <a href="#approche" className="hover:text-white transition-colors">Notre approche</a>
             <a href="#newsletter" className="hover:text-white transition-colors">Newsletter</a>
+            <a href="/partenaires" className="hover:text-white transition-colors">Partenaires</a>
             <a href="#contact" className="hover:text-white transition-colors">Contact</a>
           </div>
         </div>
